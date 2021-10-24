@@ -1,0 +1,26 @@
+name: Issues tracking time in progress
+author: Chipodeil
+description:  Visualize time issues spend in columns
+
+inputs:
+  owner:
+    description: Owner of repository
+    required: true
+  repository-name:
+    description: Repository to increment days in
+    required: true
+  labels:
+    description: Suitable labels for issue days incrementation
+    required: true
+  github-token:
+    description: Github secret token
+    required: true
+
+runs:
+  using: docker
+  image: Dockerfile
+  env:
+    owner: ${{ inputs.owner }}
+    repository_name: ${{ inputs.repository_name }}
+    labels: ${{ inputs.labels }}
+    github_token: ${{ inputs.github_token }}
