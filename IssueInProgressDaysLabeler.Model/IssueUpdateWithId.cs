@@ -4,7 +4,7 @@ namespace IssueInProgressDaysLabeler.Model
 {
     internal class IssueUpdateWithId
     {
-        public IssueUpdateWithId(int id, IssueUpdate issueUpdate)
+        internal IssueUpdateWithId(int id, IssueUpdate issueUpdate)
         {
             Id = id;
             IssueUpdate = issueUpdate;
