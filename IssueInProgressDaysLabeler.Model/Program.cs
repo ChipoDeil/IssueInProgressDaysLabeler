@@ -5,9 +5,9 @@ using CommandLine;
 
 namespace IssueInProgressDaysLabeler.Model
 {
-    internal class Program
+    public class Program
     {
-        private static Task<int> Main(string[] args)
+        public static Task<int> Main(string[] args)
         {
             using var parser = new Parser(with =>
             {
