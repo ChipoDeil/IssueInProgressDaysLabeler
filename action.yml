@@ -21,6 +21,6 @@ runs:
   image: Dockerfile
   env:
     owner: ${{ inputs.owner }}
-    repository-name: ${{ inputs.repository-name }}
+    repository_name: ${{ inputs.repository-name }}
     labels: ${{ inputs.labels }}
-    github-token: ${{ inputs.github-token }}
+    github_token: ${{ inputs.github-token }}
