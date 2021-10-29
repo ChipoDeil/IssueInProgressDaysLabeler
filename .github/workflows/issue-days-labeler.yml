@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: label issue days
-        uses: ./
+        uses: chipodeil/IssueInProgressDaysLabeler@master
         with:
           owner: "chipodeil"
           repository-name: "IssueInProgressDaysLabeler"
