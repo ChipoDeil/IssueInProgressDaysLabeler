@@ -24,7 +24,7 @@ namespace IssueInProgressDaysLabeler.Model
             Console.WriteLine(JsonConvert.SerializeObject(issuesToUpdate));
 
             var issuesToAddLabel = issuesToUpdate
-                .Where(i => i.IssueUpdate.Labels.Any(l =>
+                .Where(i => !i.IssueUpdate.Labels.Any(l =>
                     l.StartsWith(GithubConstants.LabelTemplatePrefix)))
                 .ToArray();
 

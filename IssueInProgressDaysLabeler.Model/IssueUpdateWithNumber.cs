@@ -2,15 +2,15 @@ using Octokit;
 
 namespace IssueInProgressDaysLabeler.Model
 {
-    internal class IssueUpdateWithId
+    internal class IssueUpdateWithNumber
     {
-        internal IssueUpdateWithId(int id, IssueUpdate issueUpdate)
+        internal IssueUpdateWithNumber(int number, IssueUpdate issueUpdate)
         {
-            Id = id;
+            Number = number;
             IssueUpdate = issueUpdate;
         }
 
-        internal int Id { get; }
+        internal int Number { get; }
         internal IssueUpdate IssueUpdate { get; }
     }
 }

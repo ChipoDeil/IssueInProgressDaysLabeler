@@ -18,7 +18,7 @@ namespace IssueInProgressDaysLabeler.Model
             _repositoryName = repositoryName;
         }
 
-        internal async Task<IReadOnlyCollection<IssueUpdateWithId>> GetIssuesToUpdate(
+        internal async Task<IReadOnlyCollection<IssueUpdateWithNumber>> GetIssuesToUpdate(
             IReadOnlyCollection<string> labels)
         {
             var allIssues = new List<Issue>();
@@ -44,19 +44,19 @@ namespace IssueInProgressDaysLabeler.Model
             }
 
             return allIssues
-                .Select(c => new IssueUpdateWithId(c.Id, c.ToUpdate())).ToArray();
+                .Select(c => new IssueUpdateWithNumber(c.Number, c.ToUpdate())).ToArray();
         }
 
-        internal IReadOnlyCollection<Task> UpdateIssues(IReadOnlyCollection<IssueUpdateWithId> issuesToUpdate)
+        internal IReadOnlyCollection<Task> UpdateIssues(IReadOnlyCollection<IssueUpdateWithNumber> issuesToUpdate)
         {
             return issuesToUpdate.Select(UpdateIssue).ToArray();
 
-            Task UpdateIssue(IssueUpdateWithId issueUpdateWithId)
+            Task UpdateIssue(IssueUpdateWithNumber issueUpdateWithId)
             {
                 return _gitHubClient.Issue.Update(
                     _repositoryOwner,
                     _repositoryName,
-                    issueUpdateWithId.Id,
+                    issueUpdateWithId.Number,
                     issueUpdateWithId.IssueUpdate);
             }
         }
