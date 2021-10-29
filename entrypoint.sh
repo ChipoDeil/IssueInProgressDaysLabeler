@@ -6,6 +6,6 @@ dotnet restore
 dotnet build
 dotnet run --project IssueInProgressDaysLabeler.Model -- \
     --owner "$owner" \
-    --repository-name "$repository_name" \
+    --repository-name "$repository-name" \
     --labels "$labels" \
-    --github-token "$github_token"
+    --github-token "$github-token"
