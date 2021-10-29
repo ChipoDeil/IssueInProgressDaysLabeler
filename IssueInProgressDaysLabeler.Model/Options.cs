@@ -9,7 +9,7 @@ namespace IssueInProgressDaysLabeler.Model
     internal class Options
     {
         /// <summary>
-        /// Project to increment days in
+        /// Owner of repository
         /// </summary>
         [Option("owner", Required = true, HelpText = "Owner of repository")]
         internal virtual string Owner { get; set; }

@@ -1,0 +1,16 @@
+name: Issue days labeler
+on:
+  schedule:
+    - cron: 2 * * * *
+
+jobs:
+  days-labeler:
+    runs-on: ubuntu-latest
+    steps:
+      - name: label issue days
+        uses: ./
+        with:
+          owner: "chipodeil"
+          repository-name: "IssueInProgressDaysLabeler"
+          labels: [ "1", "2" ]
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
