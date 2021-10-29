@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Mindbox.WorkingCalendar;
+using Newtonsoft.Json;
 
 namespace IssueInProgressDaysLabeler.Model
 {
@@ -19,6 +20,8 @@ namespace IssueInProgressDaysLabeler.Model
 
             var issuesToUpdate = await githubClientFacade
                 .GetIssuesToUpdate(labels);
+
+            Console.WriteLine(JsonConvert.SerializeObject(issuesToUpdate));
 
             var issuesToAddLabel = issuesToUpdate
                 .Where(i => i.IssueUpdate.Labels.Any(l =>
