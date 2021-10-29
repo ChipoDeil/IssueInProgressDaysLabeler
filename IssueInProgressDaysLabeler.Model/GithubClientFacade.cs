@@ -21,25 +21,29 @@ namespace IssueInProgressDaysLabeler.Model
         internal async Task<IReadOnlyCollection<IssueUpdateWithId>> GetIssuesToUpdate(
             IReadOnlyCollection<string> labels)
         {
-            var issueRequest = new RepositoryIssueRequest
-            {
-                Filter = IssueFilter.Assigned,
-                State = ItemStateFilter.Open
-            };
+            var allIssues = new List<Issue>();
 
             foreach (var label in labels)
             {
+                var issueRequest = new RepositoryIssueRequest
+                {
+                    Filter = IssueFilter.Assigned,
+                    State = ItemStateFilter.Open
+                };
+
                 issueRequest.Labels.Add(label);
+
+                var issues = await _gitHubClient
+                    .Issue
+                    .GetAllForRepository(
+                        _repositoryOwner,
+                        _repositoryName,
+                        issueRequest);
+
+                allIssues.AddRange(issues);
             }
 
-            var issues = await _gitHubClient
-                .Issue
-                .GetAllForRepository(
-                    _repositoryOwner,
-                    _repositoryName,
-                    issueRequest);
-
-            return issues
+            return allIssues
                 .Select(c => new IssueUpdateWithId(c.Id, c.ToUpdate())).ToArray();
         }
 
