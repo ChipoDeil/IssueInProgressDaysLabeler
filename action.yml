@@ -22,5 +22,6 @@ runs:
   env:
     owner: ${{ inputs.owner }}
     repository_name: ${{ inputs.repository-name }}
+    days_mode: ${{ inputs.days-mode }}
     labels: ${{ inputs.labels }}
     github_token: ${{ inputs.github-token }}

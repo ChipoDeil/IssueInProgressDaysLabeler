@@ -51,7 +51,8 @@ namespace IssueInProgressDaysLabeler.Model
                 options.Owner,
                 options.Repository,
                 labels: JsonConvert.DeserializeObject<string[]>(options.Labels),
-                options.GithubToken);
+                options.GithubToken,
+                options.DaysMode);
         }
     }
 }
