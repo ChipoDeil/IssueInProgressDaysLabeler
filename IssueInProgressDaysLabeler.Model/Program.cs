@@ -26,8 +26,6 @@ namespace IssueInProgressDaysLabeler.Model
         {
             var settings = ParseSettings(options);
 
-            Console.WriteLine(JsonConvert.SerializeObject(settings.Labels));
-
             var gitHubClientFacade = GithubClientFactory.Create(
                 settings.GithubToken,
                 settings.Owner,
