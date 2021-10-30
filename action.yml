@@ -1,6 +1,6 @@
 name: Issues tracking time in progress
 author: Chipodeil
-description:  Visualize time issues spend in columns
+description:  Visualize time issues spend in assigned state
 
 inputs:
   days-mode:
