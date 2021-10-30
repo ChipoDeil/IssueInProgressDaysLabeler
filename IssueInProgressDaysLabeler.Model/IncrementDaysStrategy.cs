@@ -12,8 +12,11 @@ namespace IssueInProgressDaysLabeler.Model
         internal static async Task IncrementDays(
             GithubClientFacade githubClientFacade,
             IDaysModeHelper daysModeHelper,
-            IReadOnlyCollection<string> labels)
+            IReadOnlyCollection<string> labels,
+            string labelToIncrement)
         {
+            const string number = "\\d+";
+
             if (!daysModeHelper.IsSuitableDay(DateTime.UtcNow)) return;
 
             var issuesToUpdate = await githubClientFacade
@@ -23,9 +26,9 @@ namespace IssueInProgressDaysLabeler.Model
 
             if (!issuesToUpdate.Any()) return;
 
+            var labelRegex = new Regex(string.Format(labelToIncrement, number));
             var issuesToAddLabel = issuesToUpdate
-                .Where(i => !i.IssueUpdate.Labels.Any(l =>
-                    l.StartsWith(GithubConstants.LabelTemplatePrefix)))
+                .Where(i => !i.IssueUpdate.Labels.Any(l => labelRegex.IsMatch(l)))
                 .ToArray();
 
             foreach (var issueToAddLabel in issuesToAddLabel)
@@ -37,20 +40,19 @@ namespace IssueInProgressDaysLabeler.Model
 
             foreach (var issueToIncrement in issuesToIncrement.Select(c => c.IssueUpdate))
             {
-                var labelToRemove = issueToIncrement.Labels.Single(c =>
-                    c.StartsWith(GithubConstants.LabelTemplatePrefix));
+                var labelToRemove = issueToIncrement.Labels.First(c => labelRegex.IsMatch(c));
                 issueToIncrement.Labels.Remove(labelToRemove);
 
-                var regex = new Regex("\\d+");
+                var numberParseRegex = new Regex(number);
 
-                var currentDays = int.Parse(regex.Match(labelToRemove).Groups.Values.Single().Value);
+                var currentDays = int.Parse(numberParseRegex.Match(labelToRemove).Groups.Values.Single().Value);
 
                 issueToIncrement.AddLabel(GetLabelForDays(currentDays + 1));
             }
 
             await Task.WhenAll(githubClientFacade.UpdateIssues(issuesToUpdate));
 
-            static string GetLabelForDays(int days) => string.Format(GithubConstants.LabelTemplate, days);
+            string GetLabelForDays(int days) => string.Format(labelToIncrement, days);
         }
     }
 }

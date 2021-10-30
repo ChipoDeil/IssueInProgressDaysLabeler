@@ -31,5 +31,13 @@ namespace IssueInProgressDaysLabeler.Model
         /// </summary>
         [Option("github-token", Required = true, HelpText = "Github secret token")]
         public virtual string GithubToken { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        [Option("label-to-increment",
+            Required = true,
+            HelpText = @"Label that will be added to issue, for example ""In progress: {0} days"", placeholder is required")]
+        public virtual string LabelToIncrement { get; set; }
     }
 }

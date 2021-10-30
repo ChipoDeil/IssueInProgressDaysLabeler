@@ -40,7 +40,8 @@ namespace IssueInProgressDaysLabeler.Model
             await IncrementDaysStrategy.IncrementDays(
                 gitHubClientFacade,
                 daysModeHelper,
-                settings.Labels);
+                settings.Labels,
+                settings.LabelToIncrement);
 
             return StatusCodeConstants.SuccessStatusCode;
         }
@@ -54,12 +55,16 @@ namespace IssueInProgressDaysLabeler.Model
             var owner = splitItems[0];
             var repository = splitItems[1];
 
+            if(!options.LabelToIncrement.Contains(LabelerConstants.RequiredPlaceholder))
+                throw new ArgumentException("LabelToIncrement: placeholder required");
+
             return new(
                 owner,
                 repository,
                 labels: JsonConvert.DeserializeObject<string[]>(options.Labels),
                 options.GithubToken,
-                options.DaysMode);
+                options.DaysMode,
+                options.LabelToIncrement);
         }
     }
 }
