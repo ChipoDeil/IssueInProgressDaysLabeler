@@ -3,11 +3,8 @@ author: Chipodeil
 description:  Visualize time issues spend in columns
 
 inputs:
-  owner:
-    description: Owner of repository
-    required: true
-  repository-name:
-    description: Repository to increment days in
+  days_mode:
+    description: "Suitable days to run action. This value is enum : EveryDay, EveryDayExceptWeekend, RussianCalendar"
     required: true
   labels:
     description: Suitable labels for issue days incrementation
