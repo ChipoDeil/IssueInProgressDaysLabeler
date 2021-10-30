@@ -27,7 +27,8 @@ namespace IssueInProgressDaysLabeler.Model
             {
                 var issueRequest = new RepositoryIssueRequest
                 {
-                    Filter = IssueFilter.Assigned,
+                    // octokit does not allow filtering issues by criteria "assigned to anyone"
+                    Filter = IssueFilter.All,
                     State = ItemStateFilter.Open
                 };
 
@@ -44,6 +45,7 @@ namespace IssueInProgressDaysLabeler.Model
             }
 
             return allIssues
+                .Where(c => c.Assignees.Any())
                 .Select(c => new IssueUpdateWithNumber(c.Number, c.ToUpdate())).ToArray();
         }
 
