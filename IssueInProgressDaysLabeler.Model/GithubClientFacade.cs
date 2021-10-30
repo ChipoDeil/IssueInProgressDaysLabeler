@@ -44,6 +44,7 @@ namespace IssueInProgressDaysLabeler.Model
                 allIssues.AddRange(issues);
             }
 
+            
             return allIssues
                 .Where(c => c.Assignees.Any())
                 .Select(c => new IssueUpdateWithNumber(c.Number, c.ToUpdate())).ToArray();
