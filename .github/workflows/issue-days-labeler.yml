@@ -13,3 +13,4 @@ jobs:
         with:
           labels: '["Полоса: Роадмеп", "Полоса: Техдолг"]'
           github-token: "${{ secrets.GITHUB_TOKEN }}"
+          days-mode: "RussianCalendar"

@@ -21,6 +21,12 @@ namespace IssueInProgressDaysLabeler.Model
         public virtual string Repository { get; set; }
 
         /// <summary>
+        /// Days on which action will increment value
+        /// </summary>
+        [Option("days-mode", HelpText = "Enum: EveryDay, EveryDayExceptWeekend, RussianCalendar")]
+        public virtual DaysMode DaysMode { get; set; }
+
+        /// <summary>
         /// Suitable labels for issue days incrementation
         /// </summary>
         [Option("labels", Required = true, HelpText = "Suitable labels for issue days incrementation")]

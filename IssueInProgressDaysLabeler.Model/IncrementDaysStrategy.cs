@@ -12,11 +12,10 @@ namespace IssueInProgressDaysLabeler.Model
     {
         internal static async Task IncrementDays(
             GithubClientFacade githubClientFacade,
+            IDaysModeHelper daysModeHelper,
             IReadOnlyCollection<string> labels)
         {
-            var workingCalendar = new WorkingCalendar(new Dictionary<DateTime, DayType>());
-
-            if (!workingCalendar.IsWorkingDay(DateTime.UtcNow)) return;
+            if (!daysModeHelper.IsSuitableDay(DateTime.UtcNow)) return;
 
             var issuesToUpdate = await githubClientFacade
                 .GetIssuesToUpdate(labels);
