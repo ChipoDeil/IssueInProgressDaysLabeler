@@ -39,7 +39,13 @@ namespace IssueInProgressDaysLabeler.Model
                     .GetAllForRepository(
                         _repositoryOwner,
                         _repositoryName,
-                        issueRequest);
+                        issueRequest,
+                        new ApiOptions
+                        {
+                            PageCount = 2,
+                            PageSize = 100,
+                            StartPage = 1
+                        });
 
                 allIssues.AddRange(issues);
             }
