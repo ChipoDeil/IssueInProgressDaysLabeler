@@ -10,7 +10,7 @@ namespace IssueInProgressDaysLabeler.Model
     {
         public static Task<int> Main(string[] args)
         {
-            Console.WriteLine(args);
+            Console.WriteLine(JsonConvert.SerializeObject(args));
 
             using var parser = new Parser(with =>
             {
