@@ -50,9 +50,13 @@ namespace IssueInProgressDaysLabeler.Model
 
         private static Settings ParseSettings(Options options)
         {
+            var splitItems = options.GithubRepositoryName.Split('/');
+            var owner = splitItems[0];
+            var repository = splitItems[1];
+
             return new(
-                options.Owner,
-                options.Repository.Replace($"{options.Owner}/", string.Empty, StringComparison.OrdinalIgnoreCase),
+                owner,
+                repository,
                 labels: JsonConvert.DeserializeObject<string[]>(options.Labels),
                 options.GithubToken,
                 options.DaysMode);
