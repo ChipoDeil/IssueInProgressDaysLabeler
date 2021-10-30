@@ -1,6 +1,7 @@
 name: Issue days labeler
 
 on:
+  workflow_dispatch:
   schedule:
     - cron:  '0 12 * * *'
 
