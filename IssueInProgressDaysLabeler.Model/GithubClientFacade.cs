@@ -27,8 +27,7 @@ namespace IssueInProgressDaysLabeler.Model
             {
                 var issueRequest = new RepositoryIssueRequest
                 {
-                    // octokit does not allow filtering issues by criteria "assigned to anyone"
-                    Filter = IssueFilter.All,
+                    Assignee = "*",
                     State = ItemStateFilter.Open
                 };
 
@@ -51,14 +50,7 @@ namespace IssueInProgressDaysLabeler.Model
             }
 
             return allIssues
-                /*
-                 * Note: GitHub's REST API v3 considers every pull request an issue,
-                 * but not every issue is a pull request. For this reason, "Issues"
-                 * endpoints may return both issues and pull requests in the response.
-                 * You can identify pull requests by the pull_request key.
-                 */
                 .Where(c => c.PullRequest == null)
-                .Where(c => c.Assignees.Any())
                 .Select(c => new IssueUpdateWithNumber(c.Number, c.ToUpdate())).ToArray();
         }
 
@@ -66,13 +58,13 @@ namespace IssueInProgressDaysLabeler.Model
         {
             return issuesToUpdate.Select(UpdateIssue).ToArray();
 
-            Task UpdateIssue(IssueUpdateWithNumber issueUpdateWithId)
+            Task UpdateIssue(IssueUpdateWithNumber issueUpdateWithNumber)
             {
                 return _gitHubClient.Issue.Update(
                     _repositoryOwner,
                     _repositoryName,
-                    issueUpdateWithId.Number,
-                    issueUpdateWithId.IssueUpdate);
+                    issueUpdateWithNumber.Number,
+                    issueUpdateWithNumber.IssueUpdate);
             }
         }
     }
