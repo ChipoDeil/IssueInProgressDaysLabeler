@@ -10,6 +10,8 @@ namespace IssueInProgressDaysLabeler.Model
     {
         public static Task<int> Main(string[] args)
         {
+            Console.WriteLine(JsonConvert.SerializeObject(args));
+
             using var parser = new Parser(with =>
             {
                 with.EnableDashDash = true;
@@ -25,6 +27,8 @@ namespace IssueInProgressDaysLabeler.Model
         private static async Task<int> OnParsed(Options options)
         {
             var settings = ParseSettings(options);
+
+            Console.WriteLine($"Labels: {JsonConvert.SerializeObject(settings.Labels)}");
 
             var gitHubClientFacade = GithubClientFactory.Create(
                 settings.GithubToken,
