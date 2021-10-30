@@ -35,8 +35,11 @@ namespace IssueInProgressDaysLabeler.Model
                 settings.Owner,
                 repositoryName: settings.Repository);
 
+            var daysModeHelper = new DaysModeHelper(settings.DaysMode);
+
             await IncrementDaysStrategy.IncrementDays(
                 gitHubClientFacade,
+                daysModeHelper,
                 settings.Labels);
 
             return StatusCodeConstants.SuccessStatusCode;
