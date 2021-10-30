@@ -8,7 +8,8 @@ namespace IssueInProgressDaysLabeler.Model
             string owner,
             string repository,
             IReadOnlyCollection<string> labels,
-            string githubToken, DaysMode daysMode)
+            string githubToken,
+            DaysMode daysMode)
         {
             Owner = owner;
             Repository = repository;
