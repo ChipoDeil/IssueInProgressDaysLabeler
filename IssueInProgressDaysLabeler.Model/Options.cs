@@ -23,7 +23,7 @@ namespace IssueInProgressDaysLabeler.Model
         /// <summary>
         /// Days on which action will increment value
         /// </summary>
-        [Option("days-mode", HelpText = "Enum: EveryDay, EveryDayExceptWeekend, RussianCalendar")]
+        [Option("days-mode", Required = true, HelpText = "Enum: EveryDay, EveryDayExceptWeekend, RussianCalendar")]
         public virtual DaysMode DaysMode { get; set; }
 
         /// <summary>
