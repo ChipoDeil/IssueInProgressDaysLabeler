@@ -9,7 +9,5 @@ jobs:
       - name: label issue days
         uses: chipodeil/IssueInProgressDaysLabeler@master
         with:
-          owner: "chipodeil"
-          repository-name: "IssueInProgressDaysLabeler"
           labels: '["Полоса: Роадмеп", "Полоса: Техдолг"]'
           github-token: "${{ secrets.GITHUB_TOKEN }}"

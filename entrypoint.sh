@@ -5,7 +5,7 @@ cd /app
 dotnet restore
 dotnet build
 dotnet run --project IssueInProgressDaysLabeler.Model -- \
-    --owner "$owner"\
-    --repository-name "$repository_name" \
+    --owner "$GITHUB_REPOSITORY_OWNER"\
+    --repository-name "$GITHUB_REPOSITORY" \
     --labels "$labels" \
     --github-token "$github_token"
