@@ -52,7 +52,7 @@ namespace IssueInProgressDaysLabeler.Model
         {
             return new(
                 options.Owner,
-                options.Repository,
+                options.Repository.Replace($"{options.Owner}/", string.Empty),
                 labels: JsonConvert.DeserializeObject<string[]>(options.Labels),
                 options.GithubToken,
                 options.DaysMode);
