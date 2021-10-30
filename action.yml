@@ -12,6 +12,9 @@ inputs:
   github-token:
     description: Github secret token
     required: true
+  label-to-increment:
+    description: "Label that will be added to issue, for example `In progress: {0} days`, placeholder is required"
+    required: true
 
 runs:
   using: docker
@@ -20,3 +23,4 @@ runs:
     days_mode: ${{ inputs.days-mode }}
     labels: ${{ inputs.labels }}
     github_token: ${{ inputs.github-token }}
+    label_to_increment: ${{ inputs.label-to-increment }}
