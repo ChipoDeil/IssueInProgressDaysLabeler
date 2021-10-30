@@ -2,6 +2,10 @@ name: Issues tracking time in progress
 author: Chipodeil
 description:  Visualize time issues spend in assigned state
 
+branding:
+  icon: bar-chart-2
+  color: green
+
 inputs:
   days-mode:
     description: "Suitable days to run action. This value is enum : EveryDay, EveryDayExceptWeekend, RussianCalendar"
