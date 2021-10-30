@@ -11,13 +11,13 @@ namespace IssueInProgressDaysLabeler.Model
         /// <summary>
         /// Owner of repository
         /// </summary>
-        [Option("GITHUB_REPOSITORY_OWNER", Required = true, HelpText = "Owner of repository")]
+        [Option("owner", Required = true, HelpText = "Owner of repository")]
         public virtual string Owner { get; set; }
 
         /// <summary>
         /// Repository name
         /// </summary>
-        [Option("GITHUB_REPOSITORY", Required = true, HelpText = "Repository to increment days in")]
+        [Option("repository-name", Required = true, HelpText = "Repository to increment days in")]
         public virtual string Repository { get; set; }
 
         /// <summary>
