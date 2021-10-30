@@ -10,6 +10,8 @@ namespace IssueInProgressDaysLabeler.Model
     {
         public static Task<int> Main(string[] args)
         {
+            Console.WriteLine(args);
+
             using var parser = new Parser(with =>
             {
                 with.EnableDashDash = true;
