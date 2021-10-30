@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommandLine;
+using Newtonsoft.Json;
 
 namespace IssueInProgressDaysLabeler.Model
 {
@@ -23,19 +24,30 @@ namespace IssueInProgressDaysLabeler.Model
 
         private static async Task<int> OnParsed(Options options)
         {
+            var settings = ParseSettings(options);
+
             var gitHubClientFacade = GithubClientFactory.Create(
-                options.GithubToken,
-                options.Owner,
-                options.Repository);
+                settings.GithubToken,
+                settings.Owner,
+                repositoryName: settings.Repository);
 
             await IncrementDaysStrategy.IncrementDays(
                 gitHubClientFacade,
-                options.Labels);
+                settings.Labels);
 
             return StatusCodeConstants.SuccessStatusCode;
         }
 
         private static Task<int> OnError(IEnumerable<Error> errors)
             => Task.FromResult(StatusCodeConstants.ErrorBadArgumentsStatusCode);
+
+        private static Settings ParseSettings(Options options)
+        {
+            return new(
+                options.Owner,
+                options.Repository,
+                labels: JsonConvert.DeserializeObject<string[]>(options.Labels),
+                options.GithubToken);
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace IssueInProgressDaysLabeler.Model
         /// Suitable labels for issue days incrementation
         /// </summary>
         [Option("labels", Required = true, HelpText = "Suitable labels for issue days incrementation")]
-        public virtual IReadOnlyCollection<string> Labels { get; set; }
+        public virtual string Labels { get; set; }
 
         /// <summary>
         /// Github secret token
