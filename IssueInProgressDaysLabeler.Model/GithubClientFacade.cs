@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IssueInProgressDaysLabeler.Model.Extensions;
 using Octokit;
 
 namespace IssueInProgressDaysLabeler.Model
@@ -33,7 +34,7 @@ namespace IssueInProgressDaysLabeler.Model
 
                 issueRequest.Labels.Add(label);
 
-                var issues = await _gitHubClient
+                var issues = await ApiHelpers.ExecuteWithRetry(() => _gitHubClient
                     .Issue
                     .GetAllForRepository(
                         _repositoryOwner,
@@ -44,7 +45,8 @@ namespace IssueInProgressDaysLabeler.Model
                             PageCount = 2,
                             PageSize = 100,
                             StartPage = 1
-                        });
+                        }),
+                    retryCount: 3);
 
                 allIssues.AddRange(issues);
             }
@@ -60,11 +62,11 @@ namespace IssueInProgressDaysLabeler.Model
 
             Task UpdateIssue(IssueUpdateWithNumber issueUpdateWithNumber)
             {
-                return _gitHubClient.Issue.Update(
+                return ApiHelpers.ExecuteWithRetry(() => _gitHubClient.Issue.Update(
                     _repositoryOwner,
                     _repositoryName,
                     issueUpdateWithNumber.Number,
-                    issueUpdateWithNumber.IssueUpdate);
+                    issueUpdateWithNumber.IssueUpdate), retryCount: 3);
             }
         }
     }
