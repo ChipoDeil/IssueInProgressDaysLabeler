@@ -30,18 +30,29 @@ namespace IssueInProgressDaysLabeler.Model
 
             Console.WriteLine($"Labels: {JsonConvert.SerializeObject(settings.Labels)}");
 
+            SortedSet<IssueUpdateStrategy> strategies = new()
+            {
+                new IncrementDaysStrategy(new DaysModeHelper(settings.DaysMode), settings.LabelToIncrement),
+                new CleanUpLabelStrategy(settings.LabelToIncrement)
+            };
+
             var gitHubClientFacade = GithubClientFactory.Create(
                 settings.GithubToken,
                 settings.Owner,
-                repositoryName: settings.Repository);
+                settings.Repository);
 
-            var daysModeHelper = new DaysModeHelper(settings.DaysMode);
+            var issuesToUpdate = await gitHubClientFacade
+                .GetIssuesToUpdate(settings.Labels, settings.Since);
 
-            await IncrementDaysStrategy.IncrementDays(
-                gitHubClientFacade,
-                daysModeHelper,
-                settings.Labels,
-                settings.LabelToIncrement);
+            foreach (var issue in issuesToUpdate)
+            {
+                foreach (var strategy in strategies)
+                {
+                    strategy.TryUpdateIssue(issue);
+                }
+            }
+
+            await Task.WhenAll(gitHubClientFacade.UpdateIssues(issuesToUpdate));
 
             return StatusCodeConstants.SuccessStatusCode;
         }
@@ -64,7 +75,8 @@ namespace IssueInProgressDaysLabeler.Model
                 labels: JsonConvert.DeserializeObject<string[]>(options.Labels),
                 options.GithubToken,
                 options.DaysMode,
-                options.LabelToIncrement);
+                options.LabelToIncrement,
+                options.Since);
         }
     }
 }

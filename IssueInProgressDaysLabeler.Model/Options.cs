@@ -1,3 +1,4 @@
+using System;
 using CommandLine;
 
 namespace IssueInProgressDaysLabeler.Model
@@ -12,6 +13,9 @@ namespace IssueInProgressDaysLabeler.Model
 
         [Option("labels", Required = true, HelpText = "Suitable labels for issue days incrementation")]
         public virtual string Labels { get; set; }
+
+        [Option("since", Required = false, HelpText = "Only issues updated at or after this time are processed")]
+        public virtual DateTimeOffset Since { get; set; }
 
         [Option("github-token", Required = true, HelpText = "Github secret token")]
         public virtual string GithubToken { get; set; }
