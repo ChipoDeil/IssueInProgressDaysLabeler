@@ -76,7 +76,7 @@ namespace IssueInProgressDaysLabeler.Model
                 options.GithubToken,
                 options.DaysMode,
                 options.LabelToIncrement,
-                options.Since);
+                DateTimeOffset.UtcNow - TimeSpan.FromDays(options.DaysSpan ?? 30));
         }
     }
 }

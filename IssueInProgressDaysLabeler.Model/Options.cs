@@ -14,8 +14,8 @@ namespace IssueInProgressDaysLabeler.Model
         [Option("labels", Required = true, HelpText = "Suitable labels for issue days incrementation")]
         public virtual string Labels { get; set; }
 
-        [Option("since", Required = false, HelpText = "Only issues updated at or after this time are processed")]
-        public virtual DateTimeOffset Since { get; set; }
+        [Option("since", Required = false, HelpText = "Only issues updated during this last number of days are processed (30 days by default)")]
+        public virtual int? DaysSpan { get; set; }
 
         [Option("github-token", Required = true, HelpText = "Github secret token")]
         public virtual string GithubToken { get; set; }
