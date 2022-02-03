@@ -14,8 +14,11 @@ namespace IssueInProgressDaysLabeler.Model
         [Option("labels", Required = true, HelpText = "Suitable labels for issue days incrementation")]
         public virtual string Labels { get; set; }
 
-        [Option("since", Required = false, HelpText = "Only issues updated during this last number of days are processed (30 days by default)")]
+        [Option("since", Required = false, HelpText = "Only issues updated during this last number of days are processed (none restriction by default)")]
         public virtual int? DaysSpan { get; set; }
+
+        [Option("auto-cleanup", Required = false, Default = false, HelpText = "Cleanup labels from issues in closed state (false by default)")]
+        public virtual bool AutoCleanup { get; set; }
 
         [Option("github-token", Required = true, HelpText = "Github secret token")]
         public virtual string GithubToken { get; set; }

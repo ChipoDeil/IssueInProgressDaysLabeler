@@ -12,7 +12,8 @@ namespace IssueInProgressDaysLabeler.Model
             string githubToken,
             DaysMode daysMode,
             string labelToIncrement,
-            DateTimeOffset since)
+            DateTimeOffset? since,
+            bool autoCleanup)
         {
             Owner = owner;
             Repository = repository;
@@ -21,6 +22,7 @@ namespace IssueInProgressDaysLabeler.Model
             DaysMode = daysMode;
             LabelToIncrement = labelToIncrement;
             Since = since;
+            AutoCleanup = autoCleanup;
         }
 
         internal string Owner { get; }
@@ -29,6 +31,7 @@ namespace IssueInProgressDaysLabeler.Model
         internal string GithubToken { get; }
         internal DaysMode DaysMode { get; }
         internal string LabelToIncrement { get; }
-        internal DateTimeOffset Since { get; }
+        internal DateTimeOffset? Since { get; }
+        internal bool AutoCleanup { get; }
     }
 }

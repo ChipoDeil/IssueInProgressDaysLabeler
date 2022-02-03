@@ -31,11 +31,7 @@ namespace IssueInProgressDaysLabeler.Model
 
             Console.WriteLine($"Labels: {JsonConvert.SerializeObject(settings.Labels)}");
 
-            SortedSet<IssueUpdateStrategy> strategies = new()
-            {
-                new IncrementDaysStrategy(new DaysModeHelper(settings.DaysMode), settings.LabelToIncrement),
-                new CleanUpLabelStrategy(settings.LabelToIncrement)
-            };
+            var strategies = IssueUpdateStrategyFactory.Create(settings);
 
             var gitHubClientFacade = GithubClientFactory.Create(
                 settings.GithubToken,
@@ -70,6 +66,10 @@ namespace IssueInProgressDaysLabeler.Model
             if(!options.LabelToIncrement.Contains(LabelerConstants.RequiredPlaceholder))
                 throw new ArgumentException("LabelToIncrement: placeholder required");
 
+            var since = !options.DaysSpan.HasValue
+                ? default
+                : DateTimeOffset.UtcNow - TimeSpan.FromDays(options.DaysSpan.Value);
+
             return new(
                 owner,
                 repository,
@@ -77,7 +77,8 @@ namespace IssueInProgressDaysLabeler.Model
                 options.GithubToken,
                 options.DaysMode,
                 options.LabelToIncrement,
-                DateTimeOffset.UtcNow - TimeSpan.FromDays(options.DaysSpan ?? 30));
+                since,
+                options.AutoCleanup);
         }
     }
 }
