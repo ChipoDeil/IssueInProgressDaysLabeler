@@ -7,4 +7,7 @@ dotnet IssueInProgressDaysLabeler.Model.dll \
     --days-mode "$days_mode" \
     --labels "$labels" \
     --github-token "$github_token" \
-    --label-to-increment "$label_to_increment"
+    --label-to-increment "$label_to_increment" \
+    --since-days "$since_days" \
+    --auto-cleanup "$auto_cleanup"
+

@@ -19,6 +19,12 @@ inputs:
   label-to-increment:
     description: "Label that will be added to issue, for example `In progress: {0} days`, placeholder is required"
     required: true
+  since-days:
+    description: "Only issues updated during this last number of days are processed (none restriction by default)"
+    required: false
+  auto-cleanup:
+    description: "Cleanup labels from issues in closed state (false by default)"
+    required: false
 
 runs:
   using: docker
@@ -28,3 +34,5 @@ runs:
     labels: ${{ inputs.labels }}
     github_token: ${{ inputs.github-token }}
     label_to_increment: ${{ inputs.label-to-increment }}
+    since_days: ${{ inputs.since-days }}
+    auto_cleanup: ${{ inputs.auto-cleanup }}
