@@ -66,19 +66,21 @@ namespace IssueInProgressDaysLabeler.Model
             if(!options.LabelToIncrement.Contains(LabelerConstants.RequiredPlaceholder))
                 throw new ArgumentException("LabelToIncrement: placeholder required");
 
-            var since = !options.DaysSince.HasValue
+            var autoCleanup = !string.IsNullOrEmpty(options.AutoCleanup) && bool.Parse(options.AutoCleanup);
+
+            var since = string.IsNullOrEmpty(options.DaysSince)
                 ? (DateTimeOffset?) null
-                : DateTimeOffset.UtcNow - TimeSpan.FromDays(options.DaysSince.Value);
+                : DateTimeOffset.UtcNow - TimeSpan.FromDays(int.Parse(options.DaysSince));
 
             return new(
                 owner,
                 repository,
                 labels: JsonConvert.DeserializeObject<string[]>(options.Labels),
                 options.GithubToken,
-                options.DaysMode,
+                daysMode: Enum.Parse<DaysMode>(options.DaysMode),
                 options.LabelToIncrement,
                 since,
-                options.AutoCleanup);
+                autoCleanup);
         }
     }
 }
