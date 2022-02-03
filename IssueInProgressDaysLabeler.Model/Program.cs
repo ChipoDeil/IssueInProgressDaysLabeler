@@ -66,9 +66,9 @@ namespace IssueInProgressDaysLabeler.Model
             if(!options.LabelToIncrement.Contains(LabelerConstants.RequiredPlaceholder))
                 throw new ArgumentException("LabelToIncrement: placeholder required");
 
-            var since = !options.DaysSpan.HasValue
+            var since = !options.DaysSince.HasValue
                 ? default
-                : DateTimeOffset.UtcNow - TimeSpan.FromDays(options.DaysSpan.Value);
+                : DateTimeOffset.UtcNow - TimeSpan.FromDays(options.DaysSince.Value);
 
             return new(
                 owner,
