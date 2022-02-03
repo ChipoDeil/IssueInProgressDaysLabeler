@@ -5,12 +5,12 @@ namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies
 {
     internal static class IssueUpdateStrategyFactory
     {
-        internal static SortedSet<IssueUpdateStrategy> Create(Settings settings)
+        internal static IReadOnlyCollection<IssueUpdateStrategy> Create(Settings settings)
         {
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));
 
-            SortedSet<IssueUpdateStrategy> strategies = new()
+            var strategies = new List<IssueUpdateStrategy>
             {
                 new IncrementDaysStrategy(new DaysModeHelper(settings.DaysMode), settings.LabelToIncrement)
             };

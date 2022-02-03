@@ -31,7 +31,8 @@ namespace IssueInProgressDaysLabeler.Model
                 var issueRequest = new RepositoryIssueRequest
                 {
                     Assignee = "*",
-                    Since = since
+                    Since = since,
+                    State = ItemStateFilter.All
                 };
 
                 issueRequest.Labels.Add(label);
@@ -41,13 +42,7 @@ namespace IssueInProgressDaysLabeler.Model
                     .GetAllForRepository(
                         _repositoryOwner,
                         _repositoryName,
-                        issueRequest,
-                        new ApiOptions
-                        {
-                            PageCount = 2,
-                            PageSize = 100,
-                            StartPage = 1
-                        }),
+                        issueRequest),
                     retryCount: 3);
 
                 allIssues.AddRange(issues);
