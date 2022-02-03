@@ -4,15 +4,17 @@ Track and visualize time your issues spend from assigned to closed state.
 Will help product owners, scrum masters and other people instrested in team successful sprints.
 The example project with this visualization is [here](https://github.com/ChipoDeil/IssueInProgressDaysLabeler/projects/1).
 
-## Inputs (all required for now)
+## Inputs (bold are required)
 
-* `labels` - json array of labels by which issues will be filtered
-* `github-token` - just a github token :)
-* `days-mode` - Enum value in range [EveryDay, EveryDayExceptWeekend, RussianCalendar]
+* **`labels`** - json array of labels by which issues will be filtered.
+* **`github-token`** - just a github token :)
+* **`days-mode`** - enum value in range [EveryDay, EveryDayExceptWeekend, RussianCalendar]
   * `EveryDay` - will increment days every day
   * `EveryDayExceptWeekend` - every day except Saturday and Sunday
   * `RussianCalendar` - with the help of [working-calendar](https://github.com/mindbox-moscow/working-calendar), will respect russian official holidays. Any extensions are welcomed.
-* `label-to-increment` - The label you want to increment quantity in. Should contain `{0}` placeholder for formatting purposes. 
+* **`label-to-increment`** - the label you want to increment quantity in. Should contain `{0}` placeholder for formatting purposes. 
+* `auto-cleanup` - cleanup labels from issues in closed state (false by default)
+* `since-days` - only issues updated during this last number of days are processed (none restriction by default)
 
 ## Usage example
 
