@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Octokit;
 
-namespace IssueInProgressDaysLabeler.Model
+namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies
 {
     internal class IncrementDaysStrategy : IssueUpdateStrategy
     {
@@ -23,7 +23,8 @@ namespace IssueInProgressDaysLabeler.Model
             if (issue == null)
                 throw new ArgumentNullException(nameof(issue));
 
-            if (issue.IssueUpdate.State == ItemState.Closed || _daysModeHelper.IsSuitableDay(DateTime.UtcNow))
+            if (issue.IssueUpdate.State == ItemState.Closed
+                || !_daysModeHelper.IsSuitableDay(DateTime.UtcNow))
                 return;
 
             var daysCount = 1;

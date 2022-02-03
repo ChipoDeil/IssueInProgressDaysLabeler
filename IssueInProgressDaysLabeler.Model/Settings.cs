@@ -10,7 +10,8 @@ namespace IssueInProgressDaysLabeler.Model
             string repository,
             IReadOnlyCollection<string> labels,
             string githubToken,
-            DaysMode daysMode, string labelToIncrement,
+            DaysMode daysMode,
+            string labelToIncrement,
             DateTimeOffset since)
         {
             Owner = owner;

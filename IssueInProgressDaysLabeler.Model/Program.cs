@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommandLine;
+using IssueInProgressDaysLabeler.Model.IssueUpdateStrategies;
 using Newtonsoft.Json;
 
 namespace IssueInProgressDaysLabeler.Model

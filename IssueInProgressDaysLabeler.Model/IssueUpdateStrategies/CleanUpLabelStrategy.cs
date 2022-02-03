@@ -1,7 +1,7 @@
 ﻿using System;
 using Octokit;
 
-namespace IssueInProgressDaysLabeler.Model
+namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies
 {
     internal class CleanUpLabelStrategy : IssueUpdateStrategy
     {
