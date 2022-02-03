@@ -67,7 +67,7 @@ namespace IssueInProgressDaysLabeler.Model
                 throw new ArgumentException("LabelToIncrement: placeholder required");
 
             var since = !options.DaysSince.HasValue
-                ? default
+                ? (DateTimeOffset?) null
                 : DateTimeOffset.UtcNow - TimeSpan.FromDays(options.DaysSince.Value);
 
             return new(
