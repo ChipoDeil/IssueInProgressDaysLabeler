@@ -16,3 +16,5 @@ jobs:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
           days-mode: "EveryDay"
           label-to-increment: "This issues assigned {0} days"
+          since-days: "30"
+          auto-cleanup: "true"

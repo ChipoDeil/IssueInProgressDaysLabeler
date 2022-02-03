@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +21,8 @@ namespace IssueInProgressDaysLabeler.Model
         }
 
         internal async Task<IReadOnlyCollection<IssueUpdateWithNumber>> GetIssuesToUpdate(
-            IReadOnlyCollection<string> labels)
+            IReadOnlyCollection<string> labels,
+            DateTimeOffset? since)
         {
             var allIssues = new List<Issue>();
 
@@ -29,7 +31,8 @@ namespace IssueInProgressDaysLabeler.Model
                 var issueRequest = new RepositoryIssueRequest
                 {
                     Assignee = "*",
-                    State = ItemStateFilter.Open
+                    Since = since,
+                    State = ItemStateFilter.All
                 };
 
                 issueRequest.Labels.Add(label);
@@ -39,13 +42,7 @@ namespace IssueInProgressDaysLabeler.Model
                     .GetAllForRepository(
                         _repositoryOwner,
                         _repositoryName,
-                        issueRequest,
-                        new ApiOptions
-                        {
-                            PageCount = 2,
-                            PageSize = 100,
-                            StartPage = 1
-                        }),
+                        issueRequest),
                     retryCount: 3);
 
                 allIssues.AddRange(issues);
