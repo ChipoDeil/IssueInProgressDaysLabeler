@@ -1,8 +1,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 COPY . .
 
-RUN dotnet restore "IssueInProgressDaysLabeler.Model/IssueInProgressDaysLabeler.Model.csproj"
-RUN dotnet build "IssueInProgressDaysLabeler.Model/IssueInProgressDaysLabeler.Model.csproj" -c Release -o ./app
+RUN dotnet restore "src/IssueInProgressDaysLabeler.Model/IssueInProgressDaysLabeler.Model.csproj"
+RUN dotnet build "src/IssueInProgressDaysLabeler.Model/IssueInProgressDaysLabeler.Model.csproj" -c Release -o ./app
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS release
 
