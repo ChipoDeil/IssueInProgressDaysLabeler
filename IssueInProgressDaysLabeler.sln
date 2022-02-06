@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IssueInProgressDaysLabeler.Model", "IssueInProgressDaysLabeler.Model\IssueInProgressDaysLabeler.Model.csproj", "{0A8D3C13-BCA0-45B6-BB21-01AC93C5A4E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IssueInProgressDaysLabeler.Model", "src/IssueInProgressDaysLabeler.Model\IssueInProgressDaysLabeler.Model.csproj", "{0A8D3C13-BCA0-45B6-BB21-01AC93C5A4E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
