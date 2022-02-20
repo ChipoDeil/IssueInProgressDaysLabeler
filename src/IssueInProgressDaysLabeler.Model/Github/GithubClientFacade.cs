@@ -2,25 +2,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IssueInProgressDaysLabeler.Model.Dtos;
 using IssueInProgressDaysLabeler.Model.Extensions;
 using Octokit;
 
-namespace IssueInProgressDaysLabeler.Model
+namespace IssueInProgressDaysLabeler.Model.Github
 {
-    internal sealed class GithubClientFacade
+    internal sealed class GithubClientFacade : IGithubClientFacade
     {
         private readonly GitHubClient _gitHubClient;
         private readonly string _repositoryOwner;
         private readonly string _repositoryName;
 
-        internal GithubClientFacade(GitHubClient gitHubClient, string repositoryOwner, string repositoryName)
+        internal GithubClientFacade(
+            GitHubClient gitHubClient,
+            string repositoryOwner,
+            string repositoryName)
         {
             _gitHubClient = gitHubClient;
             _repositoryOwner = repositoryOwner;
             _repositoryName = repositoryName;
         }
 
-        internal async Task<IReadOnlyCollection<IssueUpdateWithNumber>> GetIssuesToUpdate(
+        public async Task<IReadOnlyCollection<IssueUpdateWithNumber>> GetIssuesToUpdate(
             IReadOnlyCollection<string> labels,
             DateTimeOffset? since)
         {
@@ -53,7 +57,8 @@ namespace IssueInProgressDaysLabeler.Model
                 .Select(c => new IssueUpdateWithNumber(c.Number, c.ToUpdate())).ToArray();
         }
 
-        internal IReadOnlyCollection<Task> UpdateIssues(IReadOnlyCollection<IssueUpdateWithNumber> issuesToUpdate)
+        public IReadOnlyCollection<Task> UpdateIssues(
+            IReadOnlyCollection<IssueUpdateWithNumber> issuesToUpdate)
         {
             return issuesToUpdate.Select(UpdateIssue).ToArray();
 

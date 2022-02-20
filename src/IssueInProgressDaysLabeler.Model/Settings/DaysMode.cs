@@ -1,4 +1,4 @@
-namespace IssueInProgressDaysLabeler.Model
+namespace IssueInProgressDaysLabeler.Model.Settings
 {
     public enum DaysMode
     {

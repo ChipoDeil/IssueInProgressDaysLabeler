@@ -1,21 +1,30 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using IssueInProgressDaysLabeler.Model.Dtos;
+using IssueInProgressDaysLabeler.Model.IssueUpdateStrategies.DaysProcessing;
+using Microsoft.Extensions.Logging;
 using Octokit;
 
 namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies
 {
     internal class IncrementDaysStrategy : IssueUpdateStrategy
     {
+        private readonly ILogger<IncrementDaysStrategy> _logger;
         private readonly IDaysModeHelper _daysModeHelper;
         private readonly string _labelTemplate;
 
-        public IncrementDaysStrategy(IDaysModeHelper daysModeHelper, string labelTemplate)
+        public IncrementDaysStrategy(
+            ILogger<IncrementDaysStrategy> logger,
+            IDaysModeHelper daysModeHelper,
+            string labelTemplate)
         {
             if (string.IsNullOrWhiteSpace(labelTemplate))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(labelTemplate));
-            _labelTemplate = labelTemplate;
+
+            _logger = logger;
             _daysModeHelper = daysModeHelper ?? throw new ArgumentNullException(nameof(daysModeHelper));
+            _labelTemplate = labelTemplate;
         }
 
         public override void TryUpdateIssue(IssueUpdateWithNumber issue)
@@ -40,7 +49,7 @@ namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies
 
             labels.Add(string.Format(_labelTemplate, daysCount));
 
-            Console.WriteLine($"Issue #{issue.Number}: set days label to {daysCount}");
+            _logger.LogInformation($"Issue #{issue.Number}: set days label to {daysCount}");
         }
     }
 }
