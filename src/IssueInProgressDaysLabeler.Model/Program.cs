@@ -1,86 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using CommandLine;
-using IssueInProgressDaysLabeler.Model.IssueUpdateStrategies;
-using Newtonsoft.Json;
+﻿using System.Threading.Tasks;
+using IssueInProgressDaysLabeler.Model.Execution;
+using IssueInProgressDaysLabeler.Model.Extensions;
+using IssueInProgressDaysLabeler.Model.Settings;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace IssueInProgressDaysLabeler.Model
 {
     public class Program
     {
-        public static Task<int> Main(string[] args)
+        public static async Task<int> Main(string[] args)
         {
-            Console.WriteLine(JsonConvert.SerializeObject(args));
+            var configuration = await FetchSettings(args);
 
-            using var parser = new Parser(with =>
-            {
-                with.EnableDashDash = true;
-                with.HelpWriter = Console.Out;
-            });
+            if (configuration == null)
+                return StatusCodeConstants.ErrorBadArgumentsStatusCode;
 
-            var result = parser.ParseArguments<Options>(args)
-                    .MapResult(OnParsed, OnError);
-
-            return result;
-        }
-
-        private static async Task<int> OnParsed(Options options)
-        {
-            var settings = ParseSettings(options);
-
-            Console.WriteLine($"Labels: {JsonConvert.SerializeObject(settings.Labels)}");
-
-            var strategies = IssueUpdateStrategyFactory.Create(settings);
-
-            var gitHubClientFacade = GithubClientFactory.Create(
-                settings.GithubToken,
-                settings.Owner,
-                settings.Repository);
-
-            var issuesToUpdate = await gitHubClientFacade
-                .GetIssuesToUpdate(settings.Labels, settings.Since);
-
-            foreach (var issue in issuesToUpdate)
-            {
-                foreach (var strategy in strategies)
-                {
-                    strategy.TryUpdateIssue(issue);
-                }
-            }
-
-            await Task.WhenAll(gitHubClientFacade.UpdateIssues(issuesToUpdate));
+            await Run(configuration);
 
             return StatusCodeConstants.SuccessStatusCode;
         }
 
-        private static Task<int> OnError(IEnumerable<Error> errors)
-            => Task.FromResult(StatusCodeConstants.ErrorBadArgumentsStatusCode);
-
-        private static Settings ParseSettings(Options options)
+        private static async Task Run(IssueInProgressConsoleSettings configuration)
         {
-            var splitItems = options.GithubRepositoryName.Split('/');
-            var owner = splitItems[0];
-            var repository = splitItems[1];
+            await using var services = new ServiceCollection()
+                .ConfigureApp(configuration)
+                .BuildServiceProvider();
 
-            if(!options.LabelToIncrement.Contains(LabelerConstants.RequiredPlaceholder))
-                throw new ArgumentException("LabelToIncrement: placeholder required");
+            var executor = services.GetRequiredService<IAppExecutor>();
 
-            var autoCleanup = !string.IsNullOrEmpty(options.AutoCleanup) && bool.Parse(options.AutoCleanup);
+            await executor.Execute();
+        }
 
-            var since = string.IsNullOrEmpty(options.DaysSince)
-                ? (DateTimeOffset?) null
-                : DateTimeOffset.UtcNow - TimeSpan.FromDays(int.Parse(options.DaysSince));
+        private static async Task<IssueInProgressConsoleSettings?> FetchSettings(string[] args)
+        {
+            await using var rootServices = new ServiceCollection()
+                .AddSingleton<ISettingsParser, SettingsParser>()
+                .AddLogging(c => c.AddConsole())
+                .BuildServiceProvider();
 
-            return new(
-                owner,
-                repository,
-                labels: JsonConvert.DeserializeObject<string[]>(options.Labels),
-                options.GithubToken,
-                daysMode: Enum.Parse<DaysMode>(options.DaysMode),
-                options.LabelToIncrement,
-                since,
-                autoCleanup);
+            var configuration = rootServices.GetRequiredService<ISettingsParser>().TryParse(args);
+
+            return configuration;
         }
     }
 }

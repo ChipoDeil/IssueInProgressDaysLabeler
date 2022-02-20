@@ -1,4 +1,4 @@
-namespace IssueInProgressDaysLabeler.Model
+namespace IssueInProgressDaysLabeler.Model.Extensions
 {
     internal static class StatusCodeConstants
     {

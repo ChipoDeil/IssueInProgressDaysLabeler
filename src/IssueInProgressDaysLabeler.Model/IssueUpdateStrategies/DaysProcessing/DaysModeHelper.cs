@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using IssueInProgressDaysLabeler.Model.Extensions;
+using IssueInProgressDaysLabeler.Model.Settings;
 using Mindbox.WorkingCalendar;
 
-namespace IssueInProgressDaysLabeler.Model
+namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies.DaysProcessing
 {
     internal class DaysModeHelper : IDaysModeHelper
     {

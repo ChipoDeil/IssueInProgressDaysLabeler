@@ -1,16 +1,21 @@
 ﻿using System;
+using IssueInProgressDaysLabeler.Model.Dtos;
+using Microsoft.Extensions.Logging;
 using Octokit;
 
 namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies
 {
     internal class CleanUpLabelStrategy : IssueUpdateStrategy
     {
+        private readonly ILogger<CleanUpLabelStrategy> _logger;
         private readonly string _labelTemplate;
 
-        public CleanUpLabelStrategy(string labelTemplate)
+        public CleanUpLabelStrategy(ILogger<CleanUpLabelStrategy> logger, string labelTemplate)
         {
             if (string.IsNullOrWhiteSpace(labelTemplate))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(labelTemplate));
+
+            _logger = logger;
             _labelTemplate = labelTemplate;
         }
 
@@ -27,7 +32,7 @@ namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies
                 return;
 
             issue.IssueUpdate.Labels.Remove(labelToCleanUp);
-            Console.WriteLine($"Issue #{issue.Number}: removed days label");
+            _logger.LogInformation($"Issue #{issue.Number}: removed days label");
         }
     }
 }
