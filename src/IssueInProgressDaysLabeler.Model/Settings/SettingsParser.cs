@@ -12,11 +12,13 @@ namespace IssueInProgressDaysLabeler.Model.Settings
 
         public SettingsParser(ILogger<SettingsParser> logger)
         {
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public IssueInProgressConsoleSettings? TryParse(string[] programArgs)
         {
+            if (programArgs == null) throw new ArgumentNullException(nameof(programArgs));
+
             _logger.Log(LogLevel.Information, JsonConvert.SerializeObject(programArgs));
 
             using var parser = new Parser(static with =>
@@ -33,6 +35,8 @@ namespace IssueInProgressDaysLabeler.Model.Settings
 
         private static IssueInProgressConsoleSettings? OnParsed(Options options)
         {
+            if (options == null) throw new ArgumentNullException(nameof(options));
+
             var splitItems = options.GithubRepositoryName.Split('/');
             var owner = splitItems[0];
             var repository = splitItems[1];

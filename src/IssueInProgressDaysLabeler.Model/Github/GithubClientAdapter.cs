@@ -8,20 +8,18 @@ using Octokit;
 
 namespace IssueInProgressDaysLabeler.Model.Github
 {
-    internal sealed class GithubClientFacade : IGithubClientFacade
+    internal sealed class GithubClientAdapter : IGithubClientAdapter
     {
         private readonly GitHubClient _gitHubClient;
         private readonly string _repositoryOwner;
         private readonly string _repositoryName;
 
-        internal GithubClientFacade(
+        public GithubClientAdapter(
             GitHubClient gitHubClient,
-            string repositoryOwner,
-            string repositoryName)
+            GithubClientAdapterSettings settings)
         {
-            _gitHubClient = gitHubClient;
-            _repositoryOwner = repositoryOwner;
-            _repositoryName = repositoryName;
+            _gitHubClient = gitHubClient ?? throw new ArgumentNullException(nameof(gitHubClient));
+            (_repositoryOwner, _repositoryName) = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
         public async Task<IReadOnlyCollection<IssueUpdateWithNumber>> GetIssuesToUpdate(

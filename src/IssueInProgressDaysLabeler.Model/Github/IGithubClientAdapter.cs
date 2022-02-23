@@ -5,7 +5,7 @@ using IssueInProgressDaysLabeler.Model.Dtos;
 
 namespace IssueInProgressDaysLabeler.Model.Github
 {
-    internal interface IGithubClientFacade
+    internal interface IGithubClientAdapter
     {
         Task<IReadOnlyCollection<IssueUpdateWithNumber>> GetIssuesToUpdate(
             IReadOnlyCollection<string> labels,

@@ -17,14 +17,13 @@ namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies
         public IncrementDaysStrategy(
             ILogger<IncrementDaysStrategy> logger,
             IDaysModeHelper daysModeHelper,
-            string labelTemplate)
+            IncrementDaysStrategySettings settings)
         {
-            if (string.IsNullOrWhiteSpace(labelTemplate))
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(labelTemplate));
+            if (settings == null) throw new ArgumentNullException(nameof(settings));
 
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _daysModeHelper = daysModeHelper ?? throw new ArgumentNullException(nameof(daysModeHelper));
-            _labelTemplate = labelTemplate;
+            _labelTemplate = settings.LabelTemplate;
         }
 
         public override void TryUpdateIssue(IssueUpdateWithNumber issue)
