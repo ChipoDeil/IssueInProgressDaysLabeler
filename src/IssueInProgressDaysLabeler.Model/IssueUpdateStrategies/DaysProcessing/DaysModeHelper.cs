@@ -11,9 +11,11 @@ namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies.DaysProcessing
         private readonly WorkingCalendar _workingCalendar;
         private readonly DaysMode _daysMode;
 
-        public DaysModeHelper(DaysMode daysMode)
+        public DaysModeHelper(DaysModeHelperSettings settings)
         {
-            _daysMode = daysMode;
+            if (settings == null) throw new ArgumentNullException(nameof(settings));
+
+            _daysMode = settings.DaysMode;
             _workingCalendar = new WorkingCalendar(new Dictionary<DateTime, DayType>());
         }
 

@@ -10,13 +10,14 @@ namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies
         private readonly ILogger<CleanUpLabelStrategy> _logger;
         private readonly string _labelTemplate;
 
-        public CleanUpLabelStrategy(ILogger<CleanUpLabelStrategy> logger, string labelTemplate)
+        public CleanUpLabelStrategy(
+            ILogger<CleanUpLabelStrategy> logger,
+            CleanUpLabelStrategySettings settings)
         {
-            if (string.IsNullOrWhiteSpace(labelTemplate))
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(labelTemplate));
+            if (settings == null) throw new ArgumentNullException(nameof(settings));
 
-            _logger = logger;
-            _labelTemplate = labelTemplate;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _labelTemplate = settings.LabelTemplate;
         }
 
         public override void TryUpdateIssue(IssueUpdateWithNumber issue)

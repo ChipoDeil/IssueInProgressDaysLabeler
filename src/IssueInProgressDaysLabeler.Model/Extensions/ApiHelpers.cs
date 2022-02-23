@@ -8,6 +8,8 @@ namespace IssueInProgressDaysLabeler.Model.Extensions
     {
         public static async Task<T> ExecuteWithRetry<T>(Func<Task<T>> action, int retryCount)
         {
+            if (action == null) throw new ArgumentNullException(nameof(action));
+
             if (retryCount <= 0) throw new IndexOutOfRangeException(nameof(retryCount));
 
             while (true)

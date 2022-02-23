@@ -8,26 +8,24 @@ namespace IssueInProgressDaysLabeler.Model.Execution
 {
     internal class AppExecutor : IAppExecutor
     {
-        private readonly IReadOnlyCollection<IssueUpdateStrategy> _updateStrategies;
-        private readonly IGithubClientFacade _githubClientFacade;
+        private readonly IEnumerable<IssueUpdateStrategy> _updateStrategies;
+        private readonly IGithubClientAdapter _githubClientAdapter;
         private readonly IReadOnlyCollection<string> _labels;
         private readonly DateTimeOffset? _since;
 
         public AppExecutor(
-            IReadOnlyCollection<IssueUpdateStrategy> updateStrategies,
-            IGithubClientFacade githubClientFacade,
-            IReadOnlyCollection<string> labels,
-            DateTimeOffset? since)
+            IEnumerable<IssueUpdateStrategy> updateStrategies,
+            IGithubClientAdapter githubClientAdapter,
+            AppExecutorSettings settings)
         {
-            _updateStrategies = updateStrategies;
-            _githubClientFacade = githubClientFacade;
-            _labels = labels;
-            _since = since;
+            _updateStrategies = updateStrategies ?? throw new ArgumentNullException(nameof(updateStrategies));
+            _githubClientAdapter = githubClientAdapter ?? throw new ArgumentNullException(nameof(githubClientAdapter));
+            (_labels, _since) = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
         public async Task Execute()
         {
-            var issuesToUpdate = await _githubClientFacade
+            var issuesToUpdate = await _githubClientAdapter
                 .GetIssuesToUpdate(_labels, _since);
 
             foreach (var issue in issuesToUpdate)
@@ -38,7 +36,7 @@ namespace IssueInProgressDaysLabeler.Model.Execution
                 }
             }
 
-            await Task.WhenAll(_githubClientFacade.UpdateIssues(issuesToUpdate));
+            await Task.WhenAll(_githubClientAdapter.UpdateIssues(issuesToUpdate));
         }
     }
 }
