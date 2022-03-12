@@ -32,7 +32,7 @@ namespace IssueInProgressDaysLabeler.Model.Execution
             {
                 foreach (var strategy in _updateStrategies)
                 {
-                    strategy.TryUpdateIssue(issue);
+                    // strategy.TryUpdateIssue(issue);
                 }
             }
 
