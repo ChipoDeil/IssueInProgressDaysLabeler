@@ -31,7 +31,7 @@ namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies
             if (issue == null)
                 throw new ArgumentNullException(nameof(issue));
 
-            if (issue.IssueUpdate.State == ItemState.Closed
+            if (issue.IssueState != IssueState.Opened
                 || !_daysModeHelper.IsSuitableDay(DateTime.UtcNow))
                 return;
 

@@ -1,5 +1,6 @@
 using IssueInProgressDaysLabeler.Model.Execution;
 using IssueInProgressDaysLabeler.Model.Github;
+using IssueInProgressDaysLabeler.Model.IssueUpdatePreprocessors;
 using IssueInProgressDaysLabeler.Model.IssueUpdateStrategies;
 using IssueInProgressDaysLabeler.Model.IssueUpdateStrategies.DaysProcessing;
 using IssueInProgressDaysLabeler.Model.Settings;
@@ -17,6 +18,7 @@ namespace IssueInProgressDaysLabeler.Model.Extensions
         {
             serviceCollection.AddLogging(c => c.AddConsole());
             serviceCollection.AddGithubClientFacade(settings);
+            serviceCollection.AddPreprocessors();
             serviceCollection.AddUpdateStrategies(settings);
             serviceCollection.AddExecutor(settings);
 
@@ -40,6 +42,12 @@ namespace IssueInProgressDaysLabeler.Model.Extensions
                 settings.Repository));
 
             serviceCollection.AddSingleton<IGithubClientAdapter, GithubClientAdapter>();
+        }
+
+        private static void AddPreprocessors(
+            this IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddSingleton<IIssueUpdatePreprocessor, IssueUpdateNullateStatePreprocessor>();
         }
 
         private static void AddUpdateStrategies(

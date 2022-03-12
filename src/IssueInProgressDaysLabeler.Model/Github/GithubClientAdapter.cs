@@ -26,7 +26,7 @@ namespace IssueInProgressDaysLabeler.Model.Github
             IReadOnlyCollection<string> labels,
             DateTimeOffset? since)
         {
-            var allIssues = new List<Issue>();
+            var allIssues = new List<Issue>(capacity: 100);
 
             foreach (var label in labels)
             {
@@ -52,7 +52,7 @@ namespace IssueInProgressDaysLabeler.Model.Github
 
             return allIssues
                 .Where(c => c.PullRequest == null)
-                .Select(c => new IssueUpdateWithNumber(c.Number, c.ToUpdate())).ToArray();
+                .Select(c => IssueUpdateWithNumber.Convert(c.Number, c.ToUpdate())).ToArray();
         }
 
         public IReadOnlyCollection<Task> UpdateIssues(

@@ -25,7 +25,7 @@ namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies
             if (issue == null)
                 throw new ArgumentNullException(nameof(issue));
 
-            if (issue.IssueUpdate.State == ItemState.Open)
+            if (issue.IssueState == IssueState.Opened)
                 return;
 
             var labelToCleanUp = TryGetLabelByTemplate(issue, _labelTemplate);
