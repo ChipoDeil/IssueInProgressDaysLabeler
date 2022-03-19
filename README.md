@@ -26,7 +26,7 @@ Your contributions are always welcome! All your work should be done in your fork
 
 ## License
 
-**Microsoft Teams Actions** is released under [MIT License](http://opensource.org/licenses/MIT)
+**IssueInProgressDaysLabeler** is released under [MIT License](http://opensource.org/licenses/MIT)
 
 > The MIT License (MIT)
 >
