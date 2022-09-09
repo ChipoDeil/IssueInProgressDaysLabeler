@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using IssueInProgressDaysLabeler.Model.Dtos;
 using IssueInProgressDaysLabeler.Model.Github;
 using IssueInProgressDaysLabeler.Model.IssueUpdatePreprocessors;
 using IssueInProgressDaysLabeler.Model.IssueUpdateStrategies;
@@ -40,15 +42,19 @@ namespace IssueInProgressDaysLabeler.Model.Execution
                 }
             }
 
+            var actuallyUpdatedIssues = new List<IssueUpdateWithNumber>(capacity: 100);
+
             foreach (var issue in issuesToUpdate)
             {
-                foreach (var strategy in _updateStrategies)
+                var actuallyUpdated = _updateStrategies.Select(c => c.TryUpdateIssue(issue)).Any(c => c);
+
+                if (actuallyUpdated)
                 {
-                    strategy.TryUpdateIssue(issue);
+                    actuallyUpdatedIssues.Add(issue);
                 }
             }
 
-            await Task.WhenAll(_githubClientAdapter.UpdateIssues(issuesToUpdate));
+            await _githubClientAdapter.UpdateIssues(actuallyUpdatedIssues);
         }
     }
 }

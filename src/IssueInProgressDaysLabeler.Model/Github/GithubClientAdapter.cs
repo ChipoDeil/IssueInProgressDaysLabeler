@@ -55,18 +55,16 @@ namespace IssueInProgressDaysLabeler.Model.Github
                 .Select(c => IssueUpdateWithNumber.Convert(c.Number, c.ToUpdate())).ToArray();
         }
 
-        public IReadOnlyCollection<Task> UpdateIssues(
+        public async Task UpdateIssues(
             IReadOnlyCollection<IssueUpdateWithNumber> issuesToUpdate)
         {
-            return issuesToUpdate.Select(UpdateIssue).ToArray();
-
-            Task UpdateIssue(IssueUpdateWithNumber issueUpdateWithNumber)
+            foreach (var item in issuesToUpdate)
             {
-                return ApiHelpers.ExecuteWithRetry(() => _gitHubClient.Issue.Update(
+                await ApiHelpers.ExecuteWithRetry(() => _gitHubClient.Issue.Update(
                     _repositoryOwner,
                     _repositoryName,
-                    issueUpdateWithNumber.Number,
-                    issueUpdateWithNumber.IssueUpdate), retryCount: 3);
+                    item.Number,
+                    item.IssueUpdate), retryCount: 3);
             }
         }
     }

@@ -20,20 +20,28 @@ namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies
             _labelTemplate = settings.LabelTemplate;
         }
 
-        public override void TryUpdateIssue(IssueUpdateWithNumber issue)
+        public override bool TryUpdateIssue(IssueUpdateWithNumber issue)
         {
             if (issue == null)
                 throw new ArgumentNullException(nameof(issue));
 
             if (issue.IssueState == IssueState.Opened)
-                return;
+            {
+                _logger.LogInformation($"Issue #{issue.Number} skipped: opened");
+                return false;
+            }
 
             var labelToCleanUp = TryGetLabelByTemplate(issue, _labelTemplate);
             if (labelToCleanUp == null)
-                return;
+            {
+                _logger.LogInformation($"Issue #{issue.Number} skipped: no label");
+                return false;
+            }
 
             issue.IssueUpdate.Labels.Remove(labelToCleanUp);
             _logger.LogInformation($"Issue #{issue.Number}: removed days label");
+
+            return true;
         }
     }
 }

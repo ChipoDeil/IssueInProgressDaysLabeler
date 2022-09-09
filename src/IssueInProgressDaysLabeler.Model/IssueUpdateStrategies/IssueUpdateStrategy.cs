@@ -9,7 +9,7 @@ namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies
     internal abstract class IssueUpdateStrategy
     {
         protected const string DigitFormat = "\\d+";
-        public abstract void TryUpdateIssue(IssueUpdateWithNumber issue);
+        public abstract bool TryUpdateIssue(IssueUpdateWithNumber issue);
 
         protected static string? TryGetLabelByTemplate(IssueUpdateWithNumber issue, string labelTemplate)
         {

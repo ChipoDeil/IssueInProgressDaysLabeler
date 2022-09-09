@@ -11,6 +11,6 @@ namespace IssueInProgressDaysLabeler.Model.Github
             IReadOnlyCollection<string> labels,
             DateTimeOffset? since);
 
-        IReadOnlyCollection<Task> UpdateIssues(IReadOnlyCollection<IssueUpdateWithNumber> issuesToUpdate);
+        Task UpdateIssues(IReadOnlyCollection<IssueUpdateWithNumber> issuesToUpdate);
     }
 }
