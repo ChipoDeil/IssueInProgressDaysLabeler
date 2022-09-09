@@ -48,7 +48,7 @@ namespace IssueInProgressDaysLabeler.Model.Execution
                 }
             }
 
-            await Task.WhenAll(_githubClientAdapter.UpdateIssues(issuesToUpdate));
+            await _githubClientAdapter.UpdateIssues(issuesToUpdate);
         }
     }
 }
