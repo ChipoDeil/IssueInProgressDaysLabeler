@@ -3,7 +3,10 @@ using Octokit;
 
 namespace IssueInProgressDaysLabeler.Model.Dtos
 {
-    internal record IssueUpdateWithNumber(int Number, IssueState IssueState, IssueUpdate IssueUpdate)
+    internal record IssueUpdateWithNumber(
+        int Number,
+        IssueState IssueState,
+        IssueUpdate IssueUpdate)
     {
         public static IssueUpdateWithNumber Convert(int number, IssueUpdate issueUpdate)
         {

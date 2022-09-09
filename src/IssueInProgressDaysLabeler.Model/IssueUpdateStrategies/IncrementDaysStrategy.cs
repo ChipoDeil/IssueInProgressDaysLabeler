@@ -26,14 +26,17 @@ namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies
             _labelTemplate = settings.LabelTemplate;
         }
 
-        public override void TryUpdateIssue(IssueUpdateWithNumber issue)
+        public override bool TryUpdateIssue(IssueUpdateWithNumber issue)
         {
             if (issue == null)
                 throw new ArgumentNullException(nameof(issue));
 
             if (issue.IssueState != IssueState.Opened
                 || !_daysModeHelper.IsSuitableDay(DateTime.UtcNow))
-                return;
+            {
+                _logger.LogInformation($"Issue #{issue.Number} skipped");
+                return false;
+            }
 
             var daysCount = 1;
             var labels = issue.IssueUpdate.Labels;
@@ -49,6 +52,8 @@ namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies
             labels.Add(string.Format(_labelTemplate, daysCount));
 
             _logger.LogInformation($"Issue #{issue.Number}: set days label to {daysCount}");
+
+            return true;
         }
     }
 }
