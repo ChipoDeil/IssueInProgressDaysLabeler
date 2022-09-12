@@ -28,6 +28,8 @@ namespace IssueInProgressDaysLabeler.Model.Extensions
                 catch (ApiException)
                 {
                     if (retryCount == 0) throw;
+                    
+                    await Task.Delay(TimeSpan.FromSeconds(1));
                 }
             }
         }
