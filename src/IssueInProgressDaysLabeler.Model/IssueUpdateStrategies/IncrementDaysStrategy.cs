@@ -34,7 +34,7 @@ namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies
             if (issue.IssueState != IssueState.Opened
                 || !_daysModeHelper.IsSuitableDay(DateTime.UtcNow))
             {
-                _logger.LogInformation($"Issue #{issue.Number} skipped");
+                _logger.LogDebug($"Issue #{issue.Number} skipped");
                 return false;
             }
 

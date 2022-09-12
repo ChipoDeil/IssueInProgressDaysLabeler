@@ -27,14 +27,14 @@ namespace IssueInProgressDaysLabeler.Model.IssueUpdateStrategies
 
             if (issue.IssueState == IssueState.Opened)
             {
-                _logger.LogInformation($"Issue #{issue.Number} skipped: opened");
+                _logger.LogDebug($"Issue #{issue.Number} skipped: opened");
                 return false;
             }
 
             var labelToCleanUp = TryGetLabelByTemplate(issue, _labelTemplate);
             if (labelToCleanUp == null)
             {
-                _logger.LogInformation($"Issue #{issue.Number} skipped: no label");
+                _logger.LogDebug($"Issue #{issue.Number} skipped: no label");
                 return false;
             }
 
