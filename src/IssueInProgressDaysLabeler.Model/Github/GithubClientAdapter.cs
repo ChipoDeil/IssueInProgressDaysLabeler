@@ -32,14 +32,13 @@ namespace IssueInProgressDaysLabeler.Model.Github
             {
                 var issueRequest = new RepositoryIssueRequest
                 {
-                    Assignee = "*",
                     Since = since,
                     State = ItemStateFilter.All
                 };
 
                 issueRequest.Labels.Add(label);
 
-                var issues = await ApiHelpers.ExecuteWithRetry(() => _gitHubClient
+                var issues = await ApiHelpers.ExecuteWithRetryAndDelay(() => _gitHubClient
                     .Issue
                     .GetAllForRepository(
                         _repositoryOwner,
@@ -51,6 +50,8 @@ namespace IssueInProgressDaysLabeler.Model.Github
             }
 
             return allIssues
+                // TODO: make api call to filter assignees (now github api is not ready)
+                .Where(c => c.Assignee != null || c.Assignees.Any())
                 .Where(c => c.PullRequest == null)
                 .Select(c => IssueUpdateWithNumber.Convert(c.Number, c.ToUpdate())).ToArray();
         }
@@ -60,7 +61,7 @@ namespace IssueInProgressDaysLabeler.Model.Github
         {
             foreach (var item in issuesToUpdate)
             {
-                await ApiHelpers.ExecuteWithRetry(() => _gitHubClient.Issue.Update(
+                await ApiHelpers.ExecuteWithRetryAndDelay(() => _gitHubClient.Issue.Update(
                     _repositoryOwner,
                     _repositoryName,
                     item.Number,

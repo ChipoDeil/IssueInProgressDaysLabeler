@@ -6,7 +6,7 @@ namespace IssueInProgressDaysLabeler.Model.Extensions
 {
     public static class ApiHelpers
     {
-        public static async Task<T> ExecuteWithRetry<T>(Func<Task<T>> action, int retryCount)
+        public static async Task<T> ExecuteWithRetryAndDelay<T>(Func<Task<T>> action, int retryCount)
         {
             if (action == null) throw new ArgumentNullException(nameof(action));
 
@@ -19,6 +19,9 @@ namespace IssueInProgressDaysLabeler.Model.Extensions
                 try
                 {
                     var result = await action();
+
+                    // NOTE: recommended way to send multiple requests to github
+                    await Task.Delay(TimeSpan.FromSeconds(1));
 
                     return result;
                 }
