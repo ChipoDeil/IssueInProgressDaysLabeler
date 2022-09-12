@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
 COPY "src/IssueInProgressDaysLabeler.Model/IssueInProgressDaysLabeler.Model.csproj" \
   "src/IssueInProgressDaysLabeler.Model/IssueInProgressDaysLabeler.Model.csproj"
@@ -7,7 +7,7 @@ RUN dotnet restore "src/IssueInProgressDaysLabeler.Model/IssueInProgressDaysLabe
 COPY . .
 RUN dotnet build "src/IssueInProgressDaysLabeler.Model/IssueInProgressDaysLabeler.Model.csproj" -c Release -o ./app
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS release
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS release
 
 LABEL "com.github.actions.name"="Issues tracking time in progress"
 LABEL "com.github.actions.description"="Visualize time issues spend in assigned state"
