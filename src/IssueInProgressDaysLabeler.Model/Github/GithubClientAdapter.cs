@@ -28,26 +28,24 @@ namespace IssueInProgressDaysLabeler.Model.Github
         {
             var allIssues = new List<Issue>(capacity: 100);
 
-            foreach (var label in labels)
+            var issueRequest = new RepositoryIssueRequest
             {
-                var issueRequest = new RepositoryIssueRequest
-                {
-                    Since = since,
-                    State = ItemStateFilter.All
-                };
+                Since = since,
+                State = ItemStateFilter.All
+            };
 
+            foreach (var label in labels) 
                 issueRequest.Labels.Add(label);
 
-                var issues = await ApiHelpers.ExecuteWithRetryAndDelay(() => _gitHubClient
+            var issues = await ApiHelpers.ExecuteWithRetryAndDelay(() => _gitHubClient
                     .Issue
                     .GetAllForRepository(
                         _repositoryOwner,
                         _repositoryName,
                         issueRequest),
-                    retryCount: 3);
+                retryCount: 3);
 
-                allIssues.AddRange(issues);
-            }
+            allIssues.AddRange(issues);
 
             return allIssues
                 // TODO: make api call to filter assignees (now github api is not ready)

@@ -50,15 +50,14 @@ namespace IssueInProgressDaysLabeler.Model.Settings
                 ? default(DateTimeOffset?)
                 : DateTimeOffset.UtcNow - TimeSpan.FromDays(int.Parse(options.DaysSince));
 
-            var labels = JsonConvert.DeserializeObject<string[]>(options.Labels);
-
-            if (labels == null)
-                throw new InvalidOperationException("labels can not be deserialized");
+            var labels = options.Labels == null 
+                ? Array.Empty<string>()
+                : JsonConvert.DeserializeObject<string[]>(options.Labels);
 
             return new(
                 owner,
                 repository,
-                labels,
+                labels!,
                 options.GithubToken,
                 Enum.Parse<DaysMode>(options.DaysMode),
                 options.LabelToIncrement,
