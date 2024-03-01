@@ -14,7 +14,7 @@
       <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
       <PackageReference Include="Mindbox.WorkingCalendar" Version="1.0.17" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-      <PackageReference Include="Octokit" Version="2.0.1" />
+      <PackageReference Include="Octokit" Version="10.0.0" />
     </ItemGroup>
 
 </Project>
